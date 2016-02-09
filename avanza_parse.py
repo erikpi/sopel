@@ -73,7 +73,7 @@ def getOutput(res):
             change = formatting.color(change, formatting.colors.RED)
         except:
             pass
-    elif changePercent > 0:
+    elif res['changePercent'] > 0:
         change = '+{0}%'.format(res['changePercent'])
         try:
             change = formatting.color(change, formatting.colors.GREEN)
@@ -88,12 +88,31 @@ def getOutput(res):
     msg += 'Shareholders: {0}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
     return msg
 
+def getAvanzaReportDates(ticker):
+    da = getTickerInfoAvanza(ticker, quick=True)
+    r = requests.get(da['urlAbout'])
+
+    t = re.findall('<h3 class="bold">Kommande(.*?)<h3 class="bold">Tidigare', r.text ,re.DOTALL|re.MULTILINE)
+    if t:
+        da = re.sub('\s', '', t[0])
+        info = re.findall('<dt><span>([-\w]+?)</span></dt><dd><span>(.*?)</span></dd>', da, re.DOTALL|re.MULTILINE)
+        output = []
+        for i in info:
+            for s in i:
+                output.append(re.sub('<.*?>', ' ', s))
+
+    
+    return output
 
 if __name__ == "__main__":
     # test parsing function without sopel bot
     da = getTickerInfoAvanza('pricer')
     msg = getOutput(da)
     print msg
+
+    da = getAvanzaReportDates('anoto')
+    print da
+    
     sys.exit(0)
 
 from sopel import module
@@ -109,6 +128,20 @@ def avanza(bot, trigger):
         res = getTickerInfoAvanza(ticker)
         msg = getOutput(res)
         bot.say(msg)
+
+    except IndexError, TypeError:
+        bot.say('I need a valid ticker name.')
+
+@module.commands('azr')
+def avanza(bot, trigger):
+    try:
+        ticker = trigger.group(2)
+        if not ticker:
+            ticker = '123'
+
+        res = getAvanzaReportDates(ticker)
+        for r in res:
+            bot.say(r)
 
     except IndexError, TypeError:
         bot.say('I need a valid ticker name.')
