@@ -113,20 +113,20 @@ if __name__ == "__main__":
     try:
         da = getTickerInfoAvanza('priasdfadcer')
         if da is None:
-            raise TypeError("")
+            raise TypeError('I need a valid ticker name')
         msg = getOutput(da)
         print repr(msg)
-    except TypeError:
-        print 'I need a valid ticker name'
+    except (IndexError, TypeError), e:
+        print e
 
     try:
         da = getAvanzaReportDates('telia')
         if da is None:
-            raise TypeError("")
+            raise TypeError('I need a valid ticker name')
         for r in da[:5]:
             print r
-    except TypeError:
-        print 'I need a valid ticker name'
+    except (IndexError, TypeError), e:
+        print e
 
     
     sys.exit(0)
@@ -143,12 +143,12 @@ def avanza(bot, trigger):
 
         res = getTickerInfoAvanza(ticker)
         if res is None:
-            raise TypeError("")
+            raise TypeError('I need a valid ticker name.')
         msg = getOutput(res)
         bot.say(msg)
 
-    except (IndexError, TypeError):
-        bot.say('I need a valid ticker name.')
+    except (IndexError, TypeError), e:
+        bot.say(e)
 
 @module.commands('azr')
 def avanzar(bot, trigger):
@@ -159,9 +159,9 @@ def avanzar(bot, trigger):
 
         res = getAvanzaReportDates(ticker)
         if res is None:
-            raise TypeError("")
+            raise TypeError('I need a valid ticker name.')
         for r in res[:5]:
             bot.say(r)
 
-    except (IndexError, TypeError):
-        bot.say('I need a valid ticker name.')
+    except (IndexError, TypeError), e:
+        bot.say(e)
