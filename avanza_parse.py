@@ -7,6 +7,9 @@ import sys
 import os
 import requests, json
 import re
+import locale
+
+locale.setlocale(locale.LC_ALL, 'sv_SE')
 
 def avanzaStringToFloat(inputString):
     return float(inputString.replace(',', '.'))  
@@ -38,10 +41,9 @@ def getTickerInfoAvanza(ticker, quick=False):
     if quick is True:
         return res  
 
-    lastPriceUpdate = re.findall('<span class="lastPrice SText bold"><span class="pushBox roundCorners3" title="Senast uppdaterad: ([0-9:]+)">(\d+),(\d+)</span></span>', r.text)
+    lastPriceUpdate = re.findall('<span class="lastPrice SText bold"><span class="pushBox roundCorners3" title="Senast uppdaterad: ([0-9:]+)">([,\d]+)</span></span>', r.text)
     res['lastUpdate'] = lastPriceUpdate[0][0]
-    humanReadable = '{0},{1} kr'.format(*lastPriceUpdate[0][1:])
-    res['lastPrice'] = humanReadable
+    res['lastPrice'] = avanzaStringToFloat(lastPriceUpdate[0][1])
 
     dataOrderbookName = re.findall('data-orderbook_name="(.*)"', r.text)
     res['orderBookName'] = dataOrderbookName[0]
@@ -68,13 +70,13 @@ def getTickerInfoAvanza(ticker, quick=False):
 
 def getOutput(res):
     if res['changePercent'] < 0:
-        change = '{0}%'.format(res['changePercent'])
+        change = '{0:n}%'.format(res['changePercent'])
         try:
             change = formatting.color(change, formatting.colors.RED)
         except:
             pass
     elif res['changePercent'] > 0:
-        change = '+{0}%'.format(res['changePercent'])
+        change = '{0:+n}%'.format(res['changePercent'])
         try:
             change = formatting.color(change, formatting.colors.GREEN)
         except:
@@ -82,10 +84,10 @@ def getOutput(res):
     else:
         change = "0.00%"
 
-    msg = '{0}: {1} {2} ({3}). '.format(res['orderBookName'], res['lastPrice'], res['orderBookCurrency'], change)
-    msg += 'Day range: {0}-{1}. '.format(res['lowestPrice'], res['highestPrice'])
-    msg += 'Day volume: {0}. '.format(res['totalVolumeTraded'])
-    msg += 'Shareholders: {0}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
+    msg = '{0}: {1} {2} ({3}). '.format(res['orderBookName'], locale.currency(res['lastPrice']), res['orderBookCurrency'], change)
+    msg += 'Day range: {0}-{1}. '.format(locale.currency(res['lowestPrice']), locale.currency(res['highestPrice']))
+    msg += 'Day volume: {0:n}. '.format(res['totalVolumeTraded'])
+    msg += 'Shareholders: {0:n}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
     return msg
 
 def getAvanzaReportDates(ticker):
@@ -107,7 +109,7 @@ if __name__ == "__main__":
     # test parsing function without sopel bot
     da = getTickerInfoAvanza('pricer')
     msg = getOutput(da)
-    print msg
+    print repr(msg)
 
     da = getAvanzaReportDates('telia')
     for r in da[:5]:
