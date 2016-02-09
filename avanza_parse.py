@@ -98,14 +98,14 @@ def getAvanzaReportDates(ticker):
     r = requests.get(da['urlAbout'])
 
     t = re.findall('<h3 class="bold">Kommande(.*?)<h3 class="bold">Tidigare', r.text ,re.DOTALL|re.MULTILINE)
+    output = []
     if t:
         da = re.sub('\s{2,}', '', t[0])
         info = re.findall('<dt><span>([-\w]+?)</span></dt><dd><span>(.*?)</span></dd>', da, re.DOTALL|re.MULTILINE)
-        output = []
+
         for i in info:
             output.append(i[0] + ' : ' + re.sub('<.*?>', '  ', i[1]))
 
-    
     return output
 
 if __name__ == "__main__":
