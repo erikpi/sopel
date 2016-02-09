@@ -94,11 +94,11 @@ def getAvanzaReportDates(ticker):
 
     t = re.findall('<h3 class="bold">Kommande(.*?)<h3 class="bold">Tidigare', r.text ,re.DOTALL|re.MULTILINE)
     if t:
-        da = re.sub('\s', '', t[0])
+        da = re.sub('\s{2,}', '', t[0])
         info = re.findall('<dt><span>([-\w]+?)</span></dt><dd><span>(.*?)</span></dd>', da, re.DOTALL|re.MULTILINE)
         output = []
         for i in info:
-            output.append(i[0] + ' : ' + re.sub('<.*?>', ' ', i[1]))
+            output.append(i[0] + ' : ' + re.sub('<.*?>', '  ', i[1]))
 
     
     return output
@@ -109,12 +109,10 @@ if __name__ == "__main__":
     msg = getOutput(da)
     print msg
 
-    da = getAvanzaReportDates('anoto')
-    print da
-    da = getAvanzaReportDates('kambi')
-    print da
-    da = getAvanzaReportDates('pricer')
-    print da
+    da = getAvanzaReportDates('telia')
+    for r in da[:5]:
+        print r
+
     
     sys.exit(0)
 
@@ -143,7 +141,7 @@ def avanzar(bot, trigger):
             ticker = '123'
 
         res = getAvanzaReportDates(ticker)
-        for r in res:
+        for r in res[:5]:
             bot.say(r)
 
     except IndexError, TypeError:
