@@ -84,8 +84,8 @@ def getOutput(res):
     else:
         change = "0.00%"
 
-    msg = '{0}: {1} {2} ({3}). '.format(res['orderBookName'], locale.currency(res['lastPrice']), res['orderBookCurrency'], change)
-    msg += 'Day range: {0}-{1}. '.format(locale.currency(res['lowestPrice']), locale.currency(res['highestPrice']))
+    msg = '{0}: {1} {2} ({3}). '.format(res['orderBookName'], locale.currency(res['lastPrice'], symbol=False), res['orderBookCurrency'], change)
+    msg += 'Day range: {0}-{1}. '.format(locale.currency(res['lowestPrice'], symbol=False), locale.currency(res['highestPrice'], symbol=False))
     msg += 'Day volume: {0:n}. '.format(res['totalVolumeTraded'])
     msg += 'Shareholders: {0:n}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
     return msg
@@ -111,7 +111,7 @@ def getAvanzaReportDates(ticker):
 if __name__ == "__main__":
     # test parsing function without sopel bot
     try:
-        da = getTickerInfoAvanza('prasdfasdficer')
+        da = getTickerInfoAvanza('pricer')
         if da is None:
             raise
         msg = getOutput(da)
