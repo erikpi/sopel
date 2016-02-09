@@ -111,21 +111,21 @@ def getAvanzaReportDates(ticker):
 if __name__ == "__main__":
     # test parsing function without sopel bot
     try:
-        da = getTickerInfoAvanza('pricer')
+        da = getTickerInfoAvanza('priasdfadcer')
         if da is None:
-            raise
+            raise TypeError("")
         msg = getOutput(da)
         print repr(msg)
-    except:
+    except TypeError:
         print 'I need a valid ticker name'
 
     try:
         da = getAvanzaReportDates('telia')
         if da is None:
-            raise
+            raise TypeError("")
         for r in da[:5]:
             print r
-    except:
+    except TypeError:
         print 'I need a valid ticker name'
 
     
@@ -143,7 +143,7 @@ def avanza(bot, trigger):
 
         res = getTickerInfoAvanza(ticker)
         if res is None:
-            raise
+            raise TypeError("")
         msg = getOutput(res)
         bot.say(msg)
 
@@ -159,7 +159,7 @@ def avanzar(bot, trigger):
 
         res = getAvanzaReportDates(ticker)
         if res is None:
-            raise
+            raise TypeError("")
         for r in res[:5]:
             bot.say(r)
 
