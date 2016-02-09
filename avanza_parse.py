@@ -147,7 +147,7 @@ def avanza(bot, trigger):
         msg = getOutput(res)
         bot.say(msg)
 
-    except IndexError, TypeError:
+    except (IndexError, TypeError):
         bot.say('I need a valid ticker name.')
 
 @module.commands('azr')
@@ -163,5 +163,5 @@ def avanzar(bot, trigger):
         for r in res[:5]:
             bot.say(r)
 
-    except IndexError, TypeError:
+    except (IndexError, TypeError):
         bot.say('I need a valid ticker name.')
