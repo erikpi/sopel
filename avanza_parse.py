@@ -98,8 +98,7 @@ def getAvanzaReportDates(ticker):
         info = re.findall('<dt><span>([-\w]+?)</span></dt><dd><span>(.*?)</span></dd>', da, re.DOTALL|re.MULTILINE)
         output = []
         for i in info:
-            for s in i:
-                output.append(re.sub('<.*?>', ' ', s))
+            output.append(i[0] + ' : ' + re.sub('<.*?>', ' ', i[1]))
 
     
     return output
@@ -111,6 +110,10 @@ if __name__ == "__main__":
     print msg
 
     da = getAvanzaReportDates('anoto')
+    print da
+    da = getAvanzaReportDates('kambi')
+    print da
+    da = getAvanzaReportDates('pricer')
     print da
     
     sys.exit(0)
@@ -133,7 +136,7 @@ def avanza(bot, trigger):
         bot.say('I need a valid ticker name.')
 
 @module.commands('azr')
-def avanza(bot, trigger):
+def avanzar(bot, trigger):
     try:
         ticker = trigger.group(2)
         if not ticker:
