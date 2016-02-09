@@ -92,6 +92,9 @@ def getOutput(res):
 
 def getAvanzaReportDates(ticker):
     da = getTickerInfoAvanza(ticker, quick=True)
+    if da is None:
+        return da
+
     r = requests.get(da['urlAbout'])
 
     t = re.findall('<h3 class="bold">Kommande(.*?)<h3 class="bold">Tidigare', r.text ,re.DOTALL|re.MULTILINE)
@@ -107,13 +110,23 @@ def getAvanzaReportDates(ticker):
 
 if __name__ == "__main__":
     # test parsing function without sopel bot
-    da = getTickerInfoAvanza('pricer')
-    msg = getOutput(da)
-    print repr(msg)
+    try:
+        da = getTickerInfoAvanza('prasdfasdficer')
+        if da is None:
+            raise
+        msg = getOutput(da)
+        print repr(msg)
+    except:
+        print 'I need a valid ticker name'
 
-    da = getAvanzaReportDates('telia')
-    for r in da[:5]:
-        print r
+    try:
+        da = getAvanzaReportDates('telia')
+        if da is None:
+            raise
+        for r in da[:5]:
+            print r
+    except:
+        print 'I need a valid ticker name'
 
     
     sys.exit(0)
@@ -129,6 +142,8 @@ def avanza(bot, trigger):
             ticker = '123'
 
         res = getTickerInfoAvanza(ticker)
+        if res is None:
+            raise
         msg = getOutput(res)
         bot.say(msg)
 
@@ -143,6 +158,8 @@ def avanzar(bot, trigger):
             ticker = '123'
 
         res = getAvanzaReportDates(ticker)
+        if res is None:
+            raise
         for r in res[:5]:
             bot.say(r)
 
