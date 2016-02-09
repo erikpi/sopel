@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
-# Module for sopel. Will fetch html from avanza.se and display latest data in your IRC channel.
-# https://github.com/senilio/sopel
-
 import sys
 import os
 import requests, json
 from sopel import module
 from sopel import formatting
 
+
 @module.commands('a', 'avanza', 'aza', 'ava', 'az')
 def avanza(bot, trigger):
+
+   getOwners = False
 
    try:
       ticker = trigger.group(2)
@@ -23,8 +23,13 @@ def avanza(bot, trigger):
       info_url = r.text.split('":"')[1].split('","')[0]
 
       r = requests.get('https://www.avanza.se' + info_url)
-
+      print ('https://www.avanza.se' + info_url)
       for i in iter(r.text.splitlines()):
+         if getOwners:
+            owners = i.split('<span>')[1].split('</span>')[0]
+            getOwners = False
+         if 'gare hos Avanza' in i:
+            getOwners = True
          if 'lastPrice' in i and 'Senast uppdaterad' in i:
             lastPrice = i.split('>')[2].split('<')[0]
          if 'data-orderbook_name' in i:
@@ -35,6 +40,12 @@ def avanza(bot, trigger):
             currency = i.split('=')[1][1:-1]
          if 'lastPrice' in i and 'uppdaterad' in i:
             lastupdate = i.split('uppdaterad: ')[1].split('"')[0]
+         if 'highestPrice' in i:
+            high = i.split('">')[1].split('<')[0]
+         if 'lowestPrice' in i:
+            low = i.split('">')[1].split('<')[0]
+         if 'totalValueTraded' in i:
+            volume = i.split('">')[1].split('<')[0]
 
       # Format percentChange
       if ',' in changePercent:
@@ -47,7 +58,7 @@ def avanza(bot, trigger):
       else:
          change = "0.00%"
 
-      bot.say('' + longName + ' quote is: ' + lastPrice + ' ' + currency + ' (' + change + '). Updated ' + lastupdate + '.')
+      bot.say('' + longName + ': ' + lastPrice + ' ' + currency + ' (' + change + '). Day range: ' + low + '-' + high + '. Day volume: ' + volume +'. Shareholders: ' + owners + '. (Updated: ' + lastupdate + ')')
 
    except IndexError, TypeError:
       bot.say('I need a valid ticker name.')
