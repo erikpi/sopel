@@ -117,7 +117,7 @@ if __name__ == "__main__":
         msg = getOutput(da)
         print repr(msg)
     except (IndexError, TypeError) as e:
-        print e
+        print e.message
 
     try:
         da = getAvanzaReportDates('telia')
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         for r in da[:5]:
             print r
     except (IndexError, TypeError) as e:
-        print e
+        print e.message
 
     
     sys.exit(0)
@@ -148,7 +148,7 @@ def avanza(bot, trigger):
         bot.say(msg)
 
     except (IndexError, TypeError) as e:
-        bot.say(e)
+        bot.say(e.message)
 
 @module.commands('azr')
 def avanzar(bot, trigger):
@@ -164,4 +164,4 @@ def avanzar(bot, trigger):
             bot.say(r)
 
     except (IndexError, TypeError) as e:
-        bot.say(e)
+        bot.say(e.message)
