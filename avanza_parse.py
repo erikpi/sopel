@@ -116,7 +116,7 @@ if __name__ == "__main__":
             raise TypeError('I need a valid ticker name')
         msg = getOutput(da)
         print repr(msg)
-    except (IndexError, TypeError), e:
+    except (IndexError, TypeError) as e:
         print e
 
     try:
@@ -125,7 +125,7 @@ if __name__ == "__main__":
             raise TypeError('I need a valid ticker name')
         for r in da[:5]:
             print r
-    except (IndexError, TypeError), e:
+    except (IndexError, TypeError) as e:
         print e
 
     
@@ -147,7 +147,7 @@ def avanza(bot, trigger):
         msg = getOutput(res)
         bot.say(msg)
 
-    except (IndexError, TypeError), e:
+    except (IndexError, TypeError) as e:
         bot.say(e)
 
 @module.commands('azr')
@@ -163,5 +163,5 @@ def avanzar(bot, trigger):
         for r in res[:5]:
             bot.say(r)
 
-    except (IndexError, TypeError), e:
+    except (IndexError, TypeError) as e:
         bot.say(e)
