@@ -146,7 +146,7 @@ def avanza(bot, trigger):
 
         res = getTickerInfoAvanza(ticker)
         if res is None:
-            raise TypeError('I need a valid ticker name.')
+            raise TypeError('I need a valid ticker name. My lady.')
         msg = getOutput(res)
         bot.say(msg)
 
