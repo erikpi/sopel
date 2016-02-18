@@ -113,14 +113,17 @@ def getAvanzaReportDates(ticker):
 
 if __name__ == "__main__":
     # test parsing function without sopel bot
-    try:
-        da = getTickerInfoAvanza('priasdfadcer')
-        if da is None:
-            raise TypeError('I need a valid ticker name')
-        msg = getOutput(da)
-        print repr(msg)
-    except (IndexError, TypeError) as e:
-        print e.message
+    tickers = 'kambi,pricer,knebv'
+    tickers = tickers.split(',')
+    for t in tickers:
+        try:
+            da = getTickerInfoAvanza(t)
+            if da is None:
+                raise TypeError('I need a valid ticker name')
+            msg = getOutput(da)
+            print repr(msg)
+        except (IndexError, TypeError) as e:
+            print e.message
 
     try:
         da = getAvanzaReportDates('telia')
@@ -139,19 +142,21 @@ from sopel import formatting
 
 @module.commands('a', 'avanza', 'aza', 'ava', 'az')
 def avanza(bot, trigger):
-    try:
-        ticker = trigger.group(2)
-        if not ticker:
-            ticker = '123'
+    ticker = trigger.group(2)
+    if not ticker:
+        ticker = '123'
 
-        res = getTickerInfoAvanza(ticker)
-        if res is None:
-            raise TypeError('I need a valid ticker name. My lady.')
-        msg = getOutput(res)
-        bot.say(msg)
+    tickers = ticker.split(',')
+    for ticker in tickers:
+        try:
+            res = getTickerInfoAvanza(ticker)
+            if res is None:
+                raise TypeError('I need a valid ticker name. My lady.')
+            msg = getOutput(res)
+            bot.say(msg)
 
-    except (IndexError, TypeError) as e:
-        bot.say(e.message)
+        except (IndexError, TypeError) as e:
+            bot.say(e.message)
 
 @module.commands('azr')
 def avanzar(bot, trigger):
