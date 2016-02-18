@@ -12,10 +12,11 @@ import locale
 locale.setlocale(locale.LC_ALL, 'sv_SE')
 
 def avanzaStringToFloat(inputString):
-    if '-' in inputString:
-        return 0.0
-    else:
-        return float(inputString.replace(',', '.'))  
+    try:
+        f = float(inputString.replace(',', '.'))
+    except:
+        f = 0.0
+    return f
 
 def avanzaStringToInt(inputString):
     return int(re.sub('[^0-9]', '', inputString))
