@@ -88,10 +88,10 @@ def getOutput(res):
     else:
         change = "0.00%"
 
-    msg = '{0}: {1} {2} ({3}). '.format(res['orderBookName'], locale.currency(res['lastPrice'], symbol=False), res['orderBookCurrency'], change)
-    msg += 'Day range: {0}-{1}. '.format(locale.currency(res['lowestPrice'], symbol=False), locale.currency(res['highestPrice'], symbol=False))
-    msg += 'Day volume: {0:n}. '.format(res['totalVolumeTraded'])
-    msg += 'Shareholders: {0:n}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
+    msg = u'{0}: {1} {2} ({3}). '.format(res['orderBookName'], locale.currency(res['lastPrice'], symbol=False), res['orderBookCurrency'], change)
+    msg += u'Day range: {0}-{1}. '.format(locale.currency(res['lowestPrice'], symbol=False), locale.currency(res['highestPrice'], symbol=False))
+    msg += u'Day volume: {0:n}. '.format(res['totalVolumeTraded'])
+    msg += u'Shareholders: {0:n}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
     return msg
 
 def getAvanzaReportDates(ticker):
