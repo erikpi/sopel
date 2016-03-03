@@ -22,7 +22,7 @@ def avanzaStringToInt(inputString):
     return int(re.sub('[^0-9]', '', inputString))
     
 def getTickerInfoAvanza(ticker, quick=False):
-    base_url = 'https://www.avanza.se/ab/component/orderbook_search/?query={0}&collection=STOCK&onlyTradable=false&pageType=stock&orderTypeView='
+    base_url = u'https://www.avanza.se/ab/component/orderbook_search/?query={0}&collection=STOCK&onlyTradable=false&pageType=stock&orderTypeView='
 
     r = requests.get(base_url.format(ticker))
     if not r.status_code == 200:
