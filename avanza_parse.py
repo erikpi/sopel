@@ -70,6 +70,9 @@ def getTickerInfoAvanza(ticker, quick=False):
     totalVolumeTraded = re.findall('<span class="totalVolumeTraded SText bold">(.*)</span>', r.text)
     res['totalVolumeTraded'] = avanzaStringToInt(totalVolumeTraded[0])
 
+    totalValueTraded = re.findall('<span class="totalValueTraded">(.*)</span>', r.text)
+    res['totalValueTraded'] = avanzaStringToInt(totalValueTraded[0])
+
     return res
 
 def getOutput(res):
@@ -91,6 +94,7 @@ def getOutput(res):
     msg = u'{0}: {1} {2} ({3}). '.format(res['orderBookName'], locale.currency(res['lastPrice'], symbol=False), res['orderBookCurrency'], change)
     msg += u'Day range: {0}-{1}. '.format(locale.currency(res['lowestPrice'], symbol=False), locale.currency(res['highestPrice'], symbol=False))
     msg += u'Day volume: {0:n}. '.format(res['totalVolumeTraded'])
+    msg += u'Day revenue: {0:n} {1}. '.format(res['totalValueTraded'], res['orderBookCurrency'])
     msg += u'Shareholders: {0:n}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
     return msg
 
