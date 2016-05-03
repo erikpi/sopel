@@ -19,7 +19,10 @@ def avanzaStringToFloat(inputString):
     return f
 
 def avanzaStringToInt(inputString):
-    return int(re.sub('[^0-9]', '', inputString))
+    try:
+        return int(re.sub('[^0-9]', '', inputString))
+    except ValueError:
+        return 0
     
 def getTickerInfoAvanza(ticker, quick=False):
     base_url = u'https://www.avanza.se/ab/component/orderbook_search/?query={0}&collection=STOCK&onlyTradable=false&pageType=stock&orderTypeView='
