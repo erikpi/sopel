@@ -102,7 +102,7 @@ def getOutput(res):
     msg += u'Day volume: {0:n}. '.format(res['totalVolumeTraded'])
     msg += u'Day revenue: {0:n} {1}. '.format(res['totalValueTraded'], res['orderBookCurrency'])
     msg += u'Shareholders: {0:n}. (Updated: {1})'.format(res['numOwners'], res['lastUpdate'])
-    msg += u'Net Worth: {0:n}. '.format(res['networth'])
+    msg += u'Net Worth: {0:n}. MSEK '.format(res['networth'])
     return msg
 
 def getAvanzaReportDates(ticker):
