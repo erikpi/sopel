@@ -48,7 +48,7 @@ def getTickerInfoAvanza(ticker, quick=False):
     if quick is True:
         return res  
 
-    lastPriceUpdate = re.findall('<span class="lastPrice SText bold"><span class="pushBox roundCorners3" title="Senast uppdaterad: ([0-9:]+)">([,\d]+)</span></span>', r.text)
+    lastPriceUpdate = re.findall('<span class="lastPrice SText bold"><span class="pushBox roundCorners3" data-e2e="quoteLastPrice" title="Senast uppdaterad: ([0-9:]+)">([,\d]+)</span></span>', r.text)
     res['lastUpdate'] = lastPriceUpdate[0][0]
     res['lastPrice'] = avanzaStringToFloat(lastPriceUpdate[0][1])
 
