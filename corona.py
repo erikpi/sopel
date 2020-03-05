@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Module for sopel, will fetch coronavirus data
+# Codebase by Falconix - the legend
+# 2020-03-05
+
 import re
 from collections import defaultdict
 from datetime import datetime, timedelta
